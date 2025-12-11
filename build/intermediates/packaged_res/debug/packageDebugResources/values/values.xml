@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">#FF03DAC5</color>
+    <color name="black">#FF000000</color>
+    <color name="ic_launcher_background">#FF6200EE</color>
+    <color name="primary">#FF6200EE</color>
+    <color name="primary_dark">#FF3700B3</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="add_book">Добавить книгу</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="admin_panel">Панель администратора</string>
+    <string name="app_name">Электронная библиотека</string>
+    <string name="author">Автор</string>
+    <string name="books">Книги</string>
+    <string name="catalog">Поиск</string>
+    <string name="delete_book">Удалить книгу</string>
+    <string name="description">Описание</string>
+    <string name="edit_book">Редактировать книгу</string>
+    <string name="enter">Войти</string>
+    <string name="error">Ошибка</string>
+    <string name="favorites">Избранное</string>
+    <string name="first_name">Имя</string>
+    <string name="genre">Жанр</string>
+    <string name="home">Категории</string>
+    <string name="last_name">Фамилия</string>
+    <string name="loading">Загрузка...</string>
+    <string name="login">Вход</string>
+    <string name="logout">Выйти</string>
+    <string name="manage_books">Управление книгами</string>
+    <string name="manage_users">Управление пользователями</string>
+    <string name="my_books">Мои книги</string>
+    <string name="no_books">Книги не найдены</string>
+    <string name="no_favorites">У вас пока нет избранных книг</string>
+    <string name="password">Пароль</string>
+    <string name="profile">Профиль</string>
+    <string name="read">Читать</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="registration">Регистрация</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
+    <string name="search">Поиск</string>
+    <string name="search_hint">Поиск по названию, автору, жанру</string>
+    <string name="success">Успешно</string>
+    <string name="username">Логин</string>
+    <style name="Theme.ElectronicLibrary" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+    </style>
+</resources>
