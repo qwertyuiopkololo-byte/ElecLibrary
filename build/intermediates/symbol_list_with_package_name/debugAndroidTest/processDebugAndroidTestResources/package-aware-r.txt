@@ -1,0 +1,3 @@
+com.electroniclibrary.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme

@@ -1,5 +1,6 @@
 package com.electroniclibrary.data.supabase
 
+import android.util.Log
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
@@ -8,9 +9,6 @@ import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.storage.storage
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.HttpTimeout
 
 class SupabaseClientHelper private constructor() {
     private val client: SupabaseClient
@@ -18,20 +16,27 @@ class SupabaseClientHelper private constructor() {
     private val auth: Auth
     private val storage: Storage
     
-    init {
-        // Создаем HttpClient с настройками таймаутов
-        val httpClient = HttpClient(Android) {
-            install(HttpTimeout) {
-                requestTimeoutMillis = 30000 // 30 секунд вместо 10
-                connectTimeoutMillis = 10000 // 10 секунд на подключение
-                socketTimeoutMillis = 30000 // 30 секунд на чтение/запись
+    companion object {
+        private const val TAG = "SupabaseClientHelper"
+        
+        @Volatile
+        private var instance: SupabaseClientHelper? = null
+        
+        @JvmStatic
+        fun getInstance(): SupabaseClientHelper {
+            return instance ?: synchronized(this) {
+                instance ?: SupabaseClientHelper().also { instance = it }
             }
         }
+    }
+    
+    init {
+        val supabaseUrl = SupabaseConfig.SUPABASE_URL
+        Log.d(TAG, "Initializing Supabase client with URL: $supabaseUrl")
         
         client = createSupabaseClient(
-            supabaseUrl = SupabaseConfig.SUPABASE_URL,
-            supabaseKey = SupabaseConfig.SUPABASE_ANON_KEY,
-            httpEngine = httpClient
+            supabaseUrl = supabaseUrl,
+            supabaseKey = SupabaseConfig.SUPABASE_ANON_KEY
         ) {
             install(Postgrest)
             install(Auth)
@@ -42,18 +47,8 @@ class SupabaseClientHelper private constructor() {
         postgrest = client.postgrest
         auth = client.auth
         storage = client.storage
-    }
-    
-    companion object {
-        @Volatile
-        private var instance: SupabaseClientHelper? = null
         
-        @JvmStatic
-        fun getInstance(): SupabaseClientHelper {
-            return instance ?: synchronized(this) {
-                instance ?: SupabaseClientHelper().also { instance = it }
-            }
-        }
+        Log.d(TAG, "Supabase client initialized successfully")
     }
     
     fun getClient(): SupabaseClient {

@@ -23,9 +23,6 @@ public final class ActivityBookDetailBinding implements ViewBinding {
   private final ScrollView rootView;
 
   @NonNull
-  public final Button btnFavorite;
-
-  @NonNull
   public final Button btnRead;
 
   @NonNull
@@ -49,12 +46,11 @@ public final class ActivityBookDetailBinding implements ViewBinding {
   @NonNull
   public final TextView tvTitle;
 
-  private ActivityBookDetailBinding(@NonNull ScrollView rootView, @NonNull Button btnFavorite,
-      @NonNull Button btnRead, @NonNull ImageView ivCover, @NonNull ProgressBar progressBar,
-      @NonNull TextView tvAuthor, @NonNull TextView tvDescription, @NonNull TextView tvGenre,
-      @NonNull TextView tvRating, @NonNull TextView tvTitle) {
+  private ActivityBookDetailBinding(@NonNull ScrollView rootView, @NonNull Button btnRead,
+      @NonNull ImageView ivCover, @NonNull ProgressBar progressBar, @NonNull TextView tvAuthor,
+      @NonNull TextView tvDescription, @NonNull TextView tvGenre, @NonNull TextView tvRating,
+      @NonNull TextView tvTitle) {
     this.rootView = rootView;
-    this.btnFavorite = btnFavorite;
     this.btnRead = btnRead;
     this.ivCover = ivCover;
     this.progressBar = progressBar;
@@ -92,12 +88,6 @@ public final class ActivityBookDetailBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.btnFavorite;
-      Button btnFavorite = ViewBindings.findChildViewById(rootView, id);
-      if (btnFavorite == null) {
-        break missingId;
-      }
-
       id = R.id.btnRead;
       Button btnRead = ViewBindings.findChildViewById(rootView, id);
       if (btnRead == null) {
@@ -146,8 +136,8 @@ public final class ActivityBookDetailBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityBookDetailBinding((ScrollView) rootView, btnFavorite, btnRead, ivCover,
-          progressBar, tvAuthor, tvDescription, tvGenre, tvRating, tvTitle);
+      return new ActivityBookDetailBinding((ScrollView) rootView, btnRead, ivCover, progressBar,
+          tvAuthor, tvDescription, tvGenre, tvRating, tvTitle);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

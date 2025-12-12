@@ -14,7 +14,6 @@ color white
 drawable ic_book_placeholder
 drawable ic_launcher_foreground
 id bottomNavigationView
-id btnFavorite
 id btnLogin
 id btnLogout
 id btnManageBooks
@@ -24,7 +23,6 @@ id btnRegister
 id etFirstName
 id etLastName
 id etPassword
-id etSearch
 id etUsername
 id fragmentContainer
 id ivCover
@@ -33,15 +31,11 @@ id nav_catalog
 id nav_home
 id nav_profile
 id progressBar
-id progressBarFavorites
 id recyclerView
 id recyclerViewBooks
-id rvFavorites
 id tvAuthor
 id tvCategoryName
 id tvDescription
-id tvEmpty
-id tvEmptyFavorites
 id tvGenre
 id tvGenreName
 id tvName
@@ -58,7 +52,6 @@ layout activity_read_book
 layout activity_registration
 layout fragment_admin
 layout fragment_catalog
-layout fragment_favorites
 layout fragment_home
 layout fragment_profile
 layout item_book
@@ -69,7 +62,6 @@ mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 string add_book
-string add_to_favorites
 string admin_panel
 string app_name
 string author
@@ -80,7 +72,6 @@ string description
 string edit_book
 string enter
 string error
-string favorites
 string first_name
 string genre
 string home
@@ -92,13 +83,11 @@ string manage_books
 string manage_users
 string my_books
 string no_books
-string no_favorites
 string password
 string profile
 string read
 string register
 string registration
-string remove_from_favorites
 string search
 string search_hint
 string success

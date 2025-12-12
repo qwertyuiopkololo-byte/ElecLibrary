@@ -1,0 +1,6 @@
+com.electroniclibrary.test-core-1.5.0-0 C:\Users\qwert\.gradle\caches\8.11\transforms\32f07c60df1a09f01716ac8e70383d87\transformed\core-1.5.0\res
+com.electroniclibrary.test-annotation-experimental-1.3.0-1 C:\Users\qwert\.gradle\caches\8.11\transforms\c7b3d9a0ae8b0fb0d1f68b427dd5f0eb\transformed\annotation-experimental-1.3.0\res
+com.electroniclibrary.test-androidTest-2 C:\app\build\generated\res\resValues\androidTest\debug
+com.electroniclibrary.test-mergeDebugAndroidTestResources-3 C:\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.electroniclibrary.test-mergeDebugAndroidTestResources-4 C:\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.electroniclibrary.test-debugAndroidTest-5 C:\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

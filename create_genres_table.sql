@@ -45,3 +45,4 @@ INSERT INTO genres (name, description) VALUES
     ('Биография', 'Биографические произведения')
 ON CONFLICT (name) DO NOTHING;
 
+

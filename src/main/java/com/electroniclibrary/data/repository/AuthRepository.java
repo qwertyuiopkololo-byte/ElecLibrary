@@ -45,12 +45,9 @@ public class AuthRepository {
         
         executorService.execute(() -> {
             try {
-                // Check if username already exists
-                List<User> existing = SupabaseHelpers.selectWhereUsers(postgrest, "users", "username", username);
-                if (existing != null && !existing.isEmpty()) {
-                    throw new Exception("Username already taken");
-                }
-
+                // Не проверяем существование username - полагаемся на UNIQUE constraint в БД
+                // Это быстрее и надежнее, так как избегаем лишнего запроса
+                
                 User user = new User();
                 user.setUsername(username);
                 user.setFirstName(firstName);
@@ -73,7 +70,26 @@ public class AuthRepository {
                 future.complete(createdUser);
             } catch (Exception e) {
                 Log.e(TAG, "Error registering user", e);
-                future.completeExceptionally(e);
+                // Обрабатываем различные типы ошибок
+                String errorMessage = e.getMessage();
+                if (errorMessage == null) {
+                    errorMessage = "";
+                }
+                
+                // Ошибка уникальности username
+                if (errorMessage.contains("unique") || errorMessage.contains("duplicate")) {
+                    future.completeExceptionally(new Exception("Username already taken"));
+                }
+                // Ошибка подключения к сети
+                else if (errorMessage.contains("Unable to resolve host") || 
+                         errorMessage.contains("No address associated with hostname") ||
+                         errorMessage.contains("Network is unreachable")) {
+                    future.completeExceptionally(new Exception("No internet connection. Please check your network settings."));
+                }
+                // Другие ошибки
+                else {
+                    future.completeExceptionally(new Exception("Registration failed: " + errorMessage));
+                }
             }
         });
         
