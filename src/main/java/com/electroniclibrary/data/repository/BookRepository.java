@@ -276,5 +276,37 @@ public class BookRepository {
         
         return future;
     }
+
+    public CompletableFuture<Integer> getUserRating(String userId, String bookId) {
+        CompletableFuture<Integer> future = new CompletableFuture<>();
+
+        executorService.execute(() -> {
+            try {
+                Integer rating = SupabaseHelpers.getUserRatingForBook(postgrest, "book_ratings", userId, bookId);
+                future.complete(rating);
+            } catch (Exception e) {
+                Log.e(TAG, "Error getting user rating", e);
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    public CompletableFuture<Book> rateBook(String userId, String bookId, int rating) {
+        CompletableFuture<Book> future = new CompletableFuture<>();
+
+        executorService.execute(() -> {
+            try {
+                Book book = SupabaseHelpers.rateBook(postgrest, "book_ratings", "books", userId, bookId, rating);
+                future.complete(book);
+            } catch (Exception e) {
+                Log.e(TAG, "Error rating book", e);
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
 }
 

@@ -19,6 +19,7 @@ id btnLogin
 id btnLogout
 id btnManageBooks
 id btnManageUsers
+id btnRate
 id btnRead
 id btnRegister
 id etFirstName
@@ -34,6 +35,7 @@ id nav_home
 id nav_profile
 id progressBar
 id progressBarFavorites
+id ratingBar
 id recyclerView
 id recyclerViewBooks
 id rvFavorites
@@ -48,6 +50,7 @@ id tvName
 id tvRating
 id tvTitle
 id tvUsername
+id tvYourRating
 id webView
 layout activity_admin
 layout activity_book_detail
@@ -87,6 +90,7 @@ string home
 string last_name
 string loading
 string login
+string login_to_rate
 string logout
 string manage_books
 string manage_users
@@ -95,6 +99,9 @@ string no_books
 string no_favorites
 string password
 string profile
+string rate_book
+string rating_not_available
+string rating_saved
 string read
 string register
 string registration
@@ -103,4 +110,6 @@ string search
 string search_hint
 string success
 string username
+string your_rating_placeholder
+string your_rating_value
 style Theme.ElectronicLibrary

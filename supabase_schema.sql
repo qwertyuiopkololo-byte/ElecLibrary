@@ -57,6 +57,17 @@ CREATE TABLE IF NOT EXISTS favorites (
     UNIQUE(user_id, book_id)
 );
 
+-- Таблица оценок книг
+CREATE TABLE IF NOT EXISTS book_ratings (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    book_id UUID REFERENCES books(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(user_id, book_id)
+);
+
 -- Индексы для оптимизации запросов
 CREATE INDEX IF NOT EXISTS idx_books_genre ON books(genre_id);
 CREATE INDEX IF NOT EXISTS idx_books_author ON books(author_id);
@@ -64,6 +75,8 @@ CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
 CREATE INDEX IF NOT EXISTS idx_favorites_book ON favorites(book_id);
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
 CREATE INDEX IF NOT EXISTS idx_books_title ON books(title);
+CREATE INDEX IF NOT EXISTS idx_book_ratings_book ON book_ratings(book_id);
+CREATE INDEX IF NOT EXISTS idx_book_ratings_user ON book_ratings(user_id);
 
 -- Включить Row Level Security (RLS)
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -71,6 +84,7 @@ ALTER TABLE authors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE genres ENABLE ROW LEVEL SECURITY;
 ALTER TABLE books ENABLE ROW LEVEL SECURITY;
 ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
+ALTER TABLE book_ratings ENABLE ROW LEVEL SECURITY;
 
 -- Политики безопасности для чтения (все могут читать)
 CREATE POLICY "Anyone can read books" ON books FOR SELECT USING (true);
@@ -86,6 +100,12 @@ CREATE POLICY "Anyone can update users" ON users FOR UPDATE USING (true);
 CREATE POLICY "Anyone can read favorites" ON favorites FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert favorites" ON favorites FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can delete favorites" ON favorites FOR DELETE USING (true);
+
+-- Политики для оценок
+CREATE POLICY "Anyone can read book ratings" ON book_ratings FOR SELECT USING (true);
+CREATE POLICY "Anyone can insert or update book ratings" ON book_ratings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Anyone can update book ratings" ON book_ratings FOR UPDATE USING (true);
+CREATE POLICY "Anyone can delete book ratings" ON book_ratings FOR DELETE USING (true);
 
 -- Политики для администраторов больше не требуются без auth
 
@@ -109,6 +129,9 @@ CREATE TRIGGER update_genres_updated_at BEFORE UPDATE ON genres
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_books_updated_at BEFORE UPDATE ON books
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_book_ratings_updated_at BEFORE UPDATE ON book_ratings
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Вставка тестовых данных (опционально)

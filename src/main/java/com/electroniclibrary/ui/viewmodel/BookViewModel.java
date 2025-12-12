@@ -21,6 +21,7 @@ public class BookViewModel extends AndroidViewModel {
     private MutableLiveData<Book> selectedBookLiveData;
     private MutableLiveData<String> errorLiveData;
     private MutableLiveData<Boolean> loadingLiveData;
+    private MutableLiveData<Integer> userRatingLiveData;
     
     public BookViewModel(@NonNull Application application) {
         super(application);
@@ -30,6 +31,7 @@ public class BookViewModel extends AndroidViewModel {
         selectedBookLiveData = new MutableLiveData<>();
         errorLiveData = new MutableLiveData<>();
         loadingLiveData = new MutableLiveData<>();
+        userRatingLiveData = new MutableLiveData<>();
     }
     
     public LiveData<List<Book>> getBooks() {
@@ -50,6 +52,10 @@ public class BookViewModel extends AndroidViewModel {
     
     public LiveData<Boolean> getLoading() {
         return loadingLiveData;
+    }
+
+    public LiveData<Integer> getUserRating() {
+        return userRatingLiveData;
     }
     
     public void loadAllBooks() {
@@ -141,6 +147,37 @@ public class BookViewModel extends AndroidViewModel {
             loadingLiveData.postValue(false);
             return null;
         });
+    }
+
+    public void loadUserRating(String bookId, String userId) {
+        if (bookId == null || userId == null) {
+            userRatingLiveData.postValue(null);
+            return;
+        }
+
+        CompletableFuture<Integer> future = bookRepository.getUserRating(userId, bookId);
+        future.thenAccept(rating -> userRatingLiveData.postValue(rating))
+            .exceptionally(throwable -> {
+                errorLiveData.postValue(throwable.getMessage());
+                return null;
+            });
+    }
+
+    public CompletableFuture<Book> rateBook(String bookId, String userId, int rating) {
+        loadingLiveData.setValue(true);
+        CompletableFuture<Book> future = bookRepository.rateBook(userId, bookId, rating);
+        future.thenAccept(book -> {
+            if (book != null) {
+                selectedBookLiveData.postValue(book);
+                userRatingLiveData.postValue(rating);
+            }
+            loadingLiveData.postValue(false);
+        }).exceptionally(throwable -> {
+            errorLiveData.postValue(throwable.getMessage());
+            loadingLiveData.postValue(false);
+            return null;
+        });
+        return future;
     }
 }
 

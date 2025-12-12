@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -26,6 +27,9 @@ public final class ActivityBookDetailBinding implements ViewBinding {
   public final Button btnFavorite;
 
   @NonNull
+  public final Button btnRate;
+
+  @NonNull
   public final Button btnRead;
 
   @NonNull
@@ -33,6 +37,9 @@ public final class ActivityBookDetailBinding implements ViewBinding {
 
   @NonNull
   public final ProgressBar progressBar;
+
+  @NonNull
+  public final RatingBar ratingBar;
 
   @NonNull
   public final TextView tvAuthor;
@@ -49,20 +56,27 @@ public final class ActivityBookDetailBinding implements ViewBinding {
   @NonNull
   public final TextView tvTitle;
 
+  @NonNull
+  public final TextView tvYourRating;
+
   private ActivityBookDetailBinding(@NonNull ScrollView rootView, @NonNull Button btnFavorite,
-      @NonNull Button btnRead, @NonNull ImageView ivCover, @NonNull ProgressBar progressBar,
-      @NonNull TextView tvAuthor, @NonNull TextView tvDescription, @NonNull TextView tvGenre,
-      @NonNull TextView tvRating, @NonNull TextView tvTitle) {
+      @NonNull Button btnRate, @NonNull Button btnRead, @NonNull ImageView ivCover,
+      @NonNull ProgressBar progressBar, @NonNull RatingBar ratingBar, @NonNull TextView tvAuthor,
+      @NonNull TextView tvDescription, @NonNull TextView tvGenre, @NonNull TextView tvRating,
+      @NonNull TextView tvTitle, @NonNull TextView tvYourRating) {
     this.rootView = rootView;
     this.btnFavorite = btnFavorite;
+    this.btnRate = btnRate;
     this.btnRead = btnRead;
     this.ivCover = ivCover;
     this.progressBar = progressBar;
+    this.ratingBar = ratingBar;
     this.tvAuthor = tvAuthor;
     this.tvDescription = tvDescription;
     this.tvGenre = tvGenre;
     this.tvRating = tvRating;
     this.tvTitle = tvTitle;
+    this.tvYourRating = tvYourRating;
   }
 
   @Override
@@ -98,6 +112,12 @@ public final class ActivityBookDetailBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnRate;
+      Button btnRate = ViewBindings.findChildViewById(rootView, id);
+      if (btnRate == null) {
+        break missingId;
+      }
+
       id = R.id.btnRead;
       Button btnRead = ViewBindings.findChildViewById(rootView, id);
       if (btnRead == null) {
@@ -113,6 +133,12 @@ public final class ActivityBookDetailBinding implements ViewBinding {
       id = R.id.progressBar;
       ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
+        break missingId;
+      }
+
+      id = R.id.ratingBar;
+      RatingBar ratingBar = ViewBindings.findChildViewById(rootView, id);
+      if (ratingBar == null) {
         break missingId;
       }
 
@@ -146,8 +172,15 @@ public final class ActivityBookDetailBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityBookDetailBinding((ScrollView) rootView, btnFavorite, btnRead, ivCover,
-          progressBar, tvAuthor, tvDescription, tvGenre, tvRating, tvTitle);
+      id = R.id.tvYourRating;
+      TextView tvYourRating = ViewBindings.findChildViewById(rootView, id);
+      if (tvYourRating == null) {
+        break missingId;
+      }
+
+      return new ActivityBookDetailBinding((ScrollView) rootView, btnFavorite, btnRate, btnRead,
+          ivCover, progressBar, ratingBar, tvAuthor, tvDescription, tvGenre, tvRating, tvTitle,
+          tvYourRating);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

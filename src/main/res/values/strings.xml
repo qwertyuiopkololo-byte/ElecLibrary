@@ -30,6 +30,12 @@
     <string name="remove_from_favorites">Удалить из избранного</string>
     <string name="description">Описание</string>
     <string name="my_books">Мои книги</string>
+    <string name="rate_book">Оценить книгу</string>
+    <string name="your_rating_placeholder">Оцените книгу</string>
+    <string name="your_rating_value">Ваша оценка: %1$d</string>
+    <string name="rating_saved">Оценка сохранена</string>
+    <string name="login_to_rate">Войдите, чтобы оценивать книги</string>
+    <string name="rating_not_available">Рейтинг: нет оценок</string>
     
     <!-- Admin -->
     <string name="admin_panel">Панель администратора</string>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +24,9 @@ import com.electroniclibrary.ui.viewmodel.FavoriteViewModel;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView ivCover;
-    private TextView tvTitle, tvAuthor, tvGenre, tvDescription, tvRating;
-    private Button btnRead, btnFavorite;
+    private TextView tvTitle, tvAuthor, tvGenre, tvDescription, tvRating, tvYourRating;
+    private Button btnRead, btnFavorite, btnRate;
+    private RatingBar ratingBar;
     private ProgressBar progressBar;
     
     private BookViewModel bookViewModel;
@@ -59,8 +61,11 @@ public class BookDetailActivity extends AppCompatActivity {
         tvGenre = findViewById(R.id.tvGenre);
         tvDescription = findViewById(R.id.tvDescription);
         tvRating = findViewById(R.id.tvRating);
+        tvYourRating = findViewById(R.id.tvYourRating);
+        ratingBar = findViewById(R.id.ratingBar);
         btnRead = findViewById(R.id.btnRead);
         btnFavorite = findViewById(R.id.btnFavorite);
+        btnRate = findViewById(R.id.btnRate);
         progressBar = findViewById(R.id.progressBar);
         
         btnRead.setOnClickListener(v -> {
@@ -82,6 +87,7 @@ public class BookDetailActivity extends AppCompatActivity {
         });
         
         btnFavorite.setOnClickListener(v -> toggleFavorite());
+        btnRate.setOnClickListener(v -> submitRating());
     }
     
     private void setupViewModels() {
@@ -95,6 +101,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 currentBook = book;
                 displayBook(book);
                 checkFavorite();
+                loadUserRating();
             }
         });
         
@@ -106,6 +113,16 @@ public class BookDetailActivity extends AppCompatActivity {
         
         bookViewModel.getLoading().observe(this, loading -> {
             progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+        });
+
+        bookViewModel.getUserRating().observe(this, rating -> {
+            if (rating != null && rating > 0) {
+                ratingBar.setRating(rating);
+                tvYourRating.setText(getString(R.string.your_rating_value, rating));
+            } else {
+                ratingBar.setRating(0);
+                tvYourRating.setText(getString(R.string.your_rating_placeholder));
+            }
         });
         
         // Наблюдаем за ошибками при работе с избранным
@@ -134,7 +151,13 @@ public class BookDetailActivity extends AppCompatActivity {
         tvDescription.setText(book.getDescription());
         
         if (book.getRating() != null) {
-            tvRating.setText("Рейтинг: " + String.format("%.1f", book.getRating()));
+            String ratingText = "Рейтинг: " + String.format("%.1f", book.getRating());
+            if (book.getRatingCount() != null && book.getRatingCount() > 0) {
+                ratingText += " (" + book.getRatingCount() + ")";
+            }
+            tvRating.setText(ratingText);
+        } else {
+            tvRating.setText(getString(R.string.rating_not_available));
         }
         
         if (book.getCoverUrl() != null && !book.getCoverUrl().isEmpty()) {
@@ -250,6 +273,62 @@ public class BookDetailActivity extends AppCompatActivity {
         btnFavorite.setText(isFavorite ? 
             getString(R.string.remove_from_favorites) : 
             getString(R.string.add_to_favorites));
+    }
+
+    private void loadUserRating() {
+        User currentUser = authViewModel.getCurrentUser().getValue();
+        if (currentUser == null || !currentUser.isClient()) {
+            tvYourRating.setVisibility(View.GONE);
+            ratingBar.setVisibility(View.GONE);
+            btnRate.setVisibility(View.GONE);
+            return;
+        }
+
+        tvYourRating.setVisibility(View.VISIBLE);
+        ratingBar.setVisibility(View.VISIBLE);
+        btnRate.setVisibility(View.VISIBLE);
+
+        bookViewModel.loadUserRating(bookId, currentUser.getId());
+    }
+
+    private void submitRating() {
+        User currentUser = authViewModel.getCurrentUser().getValue();
+        if (currentUser == null || !currentUser.isClient()) {
+            Toast.makeText(this, getString(R.string.login_to_rate), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (currentBook == null) {
+            Toast.makeText(this, "Книга недоступна", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int value = Math.round(ratingBar.getRating());
+        if (value < 1 || value > 5) {
+            Toast.makeText(this, "Оценка должна быть от 1 до 5", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        btnRate.setEnabled(false);
+        bookViewModel.rateBook(currentBook.getId(), currentUser.getId(), value)
+            .thenAccept(book -> runOnUiThread(() -> {
+                if (book != null) {
+                    currentBook = book;
+                    displayBook(book);
+                    Toast.makeText(this, getString(R.string.rating_saved), Toast.LENGTH_SHORT).show();
+                }
+                btnRate.setEnabled(true);
+            }))
+            .exceptionally(throwable -> {
+                runOnUiThread(() -> {
+                    String errorMsg = throwable != null && throwable.getMessage() != null
+                        ? throwable.getMessage()
+                        : "Ошибка сохранения оценки";
+                    Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+                    btnRate.setEnabled(true);
+                });
+                return null;
+            });
     }
 }
 

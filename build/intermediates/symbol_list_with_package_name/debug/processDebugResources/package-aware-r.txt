@@ -3212,6 +3212,7 @@ id btnLogin
 id btnLogout
 id btnManageBooks
 id btnManageUsers
+id btnRate
 id btnRead
 id btnRegister
 id buttonPanel
@@ -3490,6 +3491,7 @@ id progressBarFavorites
 id progress_circular
 id progress_horizontal
 id radio
+id ratingBar
 id ratio
 id rectangles
 id recyclerView
@@ -3624,6 +3626,7 @@ id tvName
 id tvRating
 id tvTitle
 id tvUsername
+id tvYourRating
 id unchecked
 id uniform
 id unlabeled
@@ -3933,6 +3936,7 @@ string item_view_role_description
 string last_name
 string loading
 string login
+string login_to_rate
 string logout
 string m3_exceed_max_badge_text_suffix
 string m3_ref_typeface_brand_medium
@@ -4048,6 +4052,9 @@ string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
 string profile
+string rate_book
+string rating_not_available
+string rating_saved
 string read
 string register
 string registration
@@ -4063,6 +4070,8 @@ string side_sheet_behavior
 string status_bar_notification_info_overflow
 string success
 string username
+string your_rating_placeholder
+string your_rating_value
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog

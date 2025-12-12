@@ -173,6 +173,32 @@ object SupabaseHelpers {
         )
     }
 
+    @Serializable
+    private data class BookRatingDto(
+        val id: String? = null,
+        @SerialName("user_id")
+        val userId: String,
+        @SerialName("book_id")
+        val bookId: String,
+        val rating: Int,
+        @SerialName("created_at")
+        val createdAt: String? = null,
+        @SerialName("updated_at")
+        val updatedAt: String? = null
+    )
+
+    @Serializable
+    private data class BookRatingUpdateDto(
+        val rating: Double,
+        @SerialName("rating_count")
+        val ratingCount: Int
+    )
+
+    @Serializable
+    private data class BookRatingSingleUpdateDto(
+        val rating: Int
+    )
+
     @JvmStatic
     fun signUp(auth: Auth, email: String, password: String, username: String? = null, firstName: String? = null, lastName: String? = null) {
         runBlocking {
@@ -383,6 +409,95 @@ object SupabaseHelpers {
                     }
                 }
             }
+        }
+    }
+
+    @JvmStatic
+    fun getUserRatingForBook(postgrest: Postgrest, table: String, userId: String, bookId: String): Int? {
+        return runBlocking {
+            postgrest.from(table).select {
+                filter {
+                    eq("user_id", userId)
+                    eq("book_id", bookId)
+                }
+                limit(1)
+            }.decodeList<BookRatingDto>().firstOrNull()?.rating
+        }
+    }
+
+    @JvmStatic
+    fun rateBook(
+        postgrest: Postgrest,
+        ratingsTable: String,
+        booksTable: String,
+        userId: String,
+        bookId: String,
+        rating: Int
+    ): Book {
+        require(rating in 1..5) { "Оценка должна быть от 1 до 5" }
+
+        return runBlocking {
+            // Проверяем, существует ли уже оценка для этого пользователя и книги
+            val existingRating = postgrest.from(ratingsTable).select {
+                filter {
+                    eq("user_id", userId)
+                    eq("book_id", bookId)
+                }
+                limit(1)
+            }.decodeList<BookRatingDto>().firstOrNull()
+
+            val dto = if (existingRating != null) {
+                // Обновляем существующую оценку
+                BookRatingDto(
+                    id = existingRating.id,
+                    userId = userId,
+                    bookId = bookId,
+                    rating = rating
+                )
+            } else {
+                // Создаём новую оценку
+                BookRatingDto(
+                    userId = userId,
+                    bookId = bookId,
+                    rating = rating
+                )
+            }
+
+            // Сохраняем или обновляем оценку пользователя
+            if (existingRating != null) {
+                // Обновляем существующую оценку
+                postgrest.from(ratingsTable).update(BookRatingSingleUpdateDto(rating)) {
+                    filter {
+                        eq("user_id", userId)
+                        eq("book_id", bookId)
+                    }
+                }
+            } else {
+                // Вставляем новую оценку
+                postgrest.from(ratingsTable).insert(dto)
+            }
+
+            // Получаем все оценки для книги и считаем среднее
+            val ratings = postgrest.from(ratingsTable).select {
+                filter { eq("book_id", bookId) }
+            }.decodeList<BookRatingDto>()
+
+            val ratingValues = ratings.map { it.rating }
+            val average = if (ratingValues.isNotEmpty()) ratingValues.average() else 0.0
+            val count = ratingValues.size
+
+            // Обновляем агрегированные поля в таблице books
+            postgrest.from(booksTable).update(
+                BookRatingUpdateDto(
+                    rating = average,
+                    ratingCount = count
+                )
+            ) {
+                filter { eq("id", bookId) }
+            }
+
+            // Возвращаем актуальные данные книги
+            selectSingleBook(postgrest, booksTable, "id", bookId)
         }
     }
 }
