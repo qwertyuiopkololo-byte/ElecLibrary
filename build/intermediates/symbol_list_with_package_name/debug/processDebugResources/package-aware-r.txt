@@ -3297,6 +3297,7 @@ id enterAlwaysCollapsed
 id etFirstName
 id etLastName
 id etPassword
+id etSearch
 id etUsername
 id exitUntilCollapsed
 id expand_activities_button

@@ -24,6 +24,7 @@ id btnRegister
 id etFirstName
 id etLastName
 id etPassword
+id etSearch
 id etUsername
 id fragmentContainer
 id ivCover

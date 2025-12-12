@@ -3296,6 +3296,7 @@ int id enterAlwaysCollapsed 0x7f0800bf
 int id etFirstName 0x7f0800c0
 int id etLastName 0x7f0800c1
 int id etPassword 0x7f0800c2
+int id etSearch 0x7f080221
 int id etUsername 0x7f0800c3
 int id exitUntilCollapsed 0x7f0800c4
 int id expand_activities_button 0x7f0800c5

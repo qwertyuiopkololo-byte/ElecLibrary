@@ -1,9 +1,12 @@
 package com.electroniclibrary.ui.catalog;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogFragment extends Fragment {
+    private EditText etSearch;
     private RecyclerView recyclerViewBooks;
     private ProgressBar progressBar;
     private BookAdapter bookAdapter;
@@ -41,10 +45,12 @@ public class CatalogFragment extends Fragment {
         initViews(view);
         setupViewModel();
         setupRecyclerViews();
+        setupSearch();
         loadData();
     }
     
     private void initViews(View view) {
+        etSearch = view.findViewById(R.id.etSearch);
         recyclerViewBooks = view.findViewById(R.id.recyclerViewBooks);
         progressBar = view.findViewById(R.id.progressBar);
     }
@@ -81,6 +87,26 @@ public class CatalogFragment extends Fragment {
         });
         recyclerViewBooks.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewBooks.setAdapter(bookAdapter);
+    }
+    
+    private void setupSearch() {
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim();
+                if (query.length() >= 2) {
+                    bookViewModel.searchBooks(query);
+                } else if (query.isEmpty()) {
+                    bookViewModel.loadPopularBooks(20);
+                }
+            }
+            
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
     
     private void loadData() {

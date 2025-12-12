@@ -4,6 +4,7 @@ package com.electroniclibrary.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
@@ -21,14 +22,18 @@ public final class FragmentCatalogBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final EditText etSearch;
+
+  @NonNull
   public final ProgressBar progressBar;
 
   @NonNull
   public final RecyclerView recyclerViewBooks;
 
-  private FragmentCatalogBinding(@NonNull LinearLayout rootView, @NonNull ProgressBar progressBar,
-      @NonNull RecyclerView recyclerViewBooks) {
+  private FragmentCatalogBinding(@NonNull LinearLayout rootView, @NonNull EditText etSearch,
+      @NonNull ProgressBar progressBar, @NonNull RecyclerView recyclerViewBooks) {
     this.rootView = rootView;
+    this.etSearch = etSearch;
     this.progressBar = progressBar;
     this.recyclerViewBooks = recyclerViewBooks;
   }
@@ -60,6 +65,12 @@ public final class FragmentCatalogBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.etSearch;
+      EditText etSearch = ViewBindings.findChildViewById(rootView, id);
+      if (etSearch == null) {
+        break missingId;
+      }
+
       id = R.id.progressBar;
       ProgressBar progressBar = ViewBindings.findChildViewById(rootView, id);
       if (progressBar == null) {
@@ -72,7 +83,8 @@ public final class FragmentCatalogBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentCatalogBinding((LinearLayout) rootView, progressBar, recyclerViewBooks);
+      return new FragmentCatalogBinding((LinearLayout) rootView, etSearch, progressBar,
+          recyclerViewBooks);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
