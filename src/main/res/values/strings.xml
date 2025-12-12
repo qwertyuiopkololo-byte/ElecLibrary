@@ -16,6 +16,7 @@
     <!-- Navigation -->
     <string name="home">Категории</string>
     <string name="catalog">Поиск</string>
+    <string name="favorites">Избранное</string>
     <string name="profile">Профиль</string>
     
     <!-- Books -->
@@ -25,6 +26,8 @@
     <string name="author">Автор</string>
     <string name="genre">Жанр</string>
     <string name="read">Читать</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
     <string name="description">Описание</string>
     <string name="my_books">Мои книги</string>
     
@@ -41,6 +44,7 @@
     <string name="error">Ошибка</string>
     <string name="success">Успешно</string>
     <string name="no_books">Книги не найдены</string>
+    <string name="no_favorites">У вас пока нет избранных книг</string>
     
 </resources>
 

@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.electroniclibrary.R;
@@ -24,15 +26,28 @@ public final class FragmentProfileBinding implements ViewBinding {
   public final Button btnLogout;
 
   @NonNull
+  public final ProgressBar progressBarFavorites;
+
+  @NonNull
+  public final RecyclerView rvFavorites;
+
+  @NonNull
+  public final TextView tvEmptyFavorites;
+
+  @NonNull
   public final TextView tvName;
 
   @NonNull
   public final TextView tvUsername;
 
   private FragmentProfileBinding(@NonNull LinearLayout rootView, @NonNull Button btnLogout,
-      @NonNull TextView tvName, @NonNull TextView tvUsername) {
+      @NonNull ProgressBar progressBarFavorites, @NonNull RecyclerView rvFavorites,
+      @NonNull TextView tvEmptyFavorites, @NonNull TextView tvName, @NonNull TextView tvUsername) {
     this.rootView = rootView;
     this.btnLogout = btnLogout;
+    this.progressBarFavorites = progressBarFavorites;
+    this.rvFavorites = rvFavorites;
+    this.tvEmptyFavorites = tvEmptyFavorites;
     this.tvName = tvName;
     this.tvUsername = tvUsername;
   }
@@ -70,6 +85,24 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.progressBarFavorites;
+      ProgressBar progressBarFavorites = ViewBindings.findChildViewById(rootView, id);
+      if (progressBarFavorites == null) {
+        break missingId;
+      }
+
+      id = R.id.rvFavorites;
+      RecyclerView rvFavorites = ViewBindings.findChildViewById(rootView, id);
+      if (rvFavorites == null) {
+        break missingId;
+      }
+
+      id = R.id.tvEmptyFavorites;
+      TextView tvEmptyFavorites = ViewBindings.findChildViewById(rootView, id);
+      if (tvEmptyFavorites == null) {
+        break missingId;
+      }
+
       id = R.id.tvName;
       TextView tvName = ViewBindings.findChildViewById(rootView, id);
       if (tvName == null) {
@@ -82,7 +115,8 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentProfileBinding((LinearLayout) rootView, btnLogout, tvName, tvUsername);
+      return new FragmentProfileBinding((LinearLayout) rootView, btnLogout, progressBarFavorites,
+          rvFavorites, tvEmptyFavorites, tvName, tvUsername);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

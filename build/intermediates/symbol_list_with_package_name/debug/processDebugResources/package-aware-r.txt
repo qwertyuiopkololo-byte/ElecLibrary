@@ -3207,6 +3207,7 @@ id browser_actions_menu_item_icon
 id browser_actions_menu_item_text
 id browser_actions_menu_items
 id browser_actions_menu_view
+id btnFavorite
 id btnLogin
 id btnLogout
 id btnManageBooks
@@ -3484,6 +3485,7 @@ id position
 id postLayout
 id pressed
 id progressBar
+id progressBarFavorites
 id progress_circular
 id progress_horizontal
 id radio
@@ -3500,6 +3502,7 @@ id right_side
 id rounded
 id row_index_key
 id rtl
+id rvFavorites
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3612,6 +3615,8 @@ id triangle
 id tvAuthor
 id tvCategoryName
 id tvDescription
+id tvEmpty
+id tvEmptyFavorites
 id tvGenre
 id tvGenreName
 id tvName
@@ -3784,6 +3789,7 @@ layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout fragment_admin
 layout fragment_catalog
+layout fragment_favorites
 layout fragment_home
 layout fragment_profile
 layout item_book
@@ -3883,6 +3889,7 @@ string abc_shareactionprovider_share_with
 string abc_shareactionprovider_share_with_application
 string abc_toolbar_collapse_description
 string add_book
+string add_to_favorites
 string admin_panel
 string androidx_startup
 string app_name
@@ -3915,6 +3922,7 @@ string fab_transformation_sheet_behavior
 string fallback_menu_item_copy_link
 string fallback_menu_item_open_in_browser
 string fallback_menu_item_share_link
+string favorites
 string first_name
 string genre
 string hide_bottom_view_on_scroll_behavior
@@ -4031,6 +4039,7 @@ string my_books
 string nav_app_bar_navigate_up_description
 string nav_app_bar_open_drawer_description
 string no_books
+string no_favorites
 string password
 string password_toggle_content_description
 string path_password_eye
@@ -4041,6 +4050,7 @@ string profile
 string read
 string register
 string registration
+string remove_from_favorites
 string search
 string search_hint
 string search_menu_title
